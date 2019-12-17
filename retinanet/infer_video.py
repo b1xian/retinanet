@@ -240,9 +240,12 @@ def detect(model, frame, alarm_range, camera_time, resize=800, max_size=1333, mi
         boxes = boxes[keep, :] / ratio
         classes = classes[keep].int()
         alarm = False
+        cate_dict = {0: 'person?', 1: 'person', 2: 'people', 3: 'animal', }
         for score, box, cat in zip(scores, boxes, classes):
             x1, y1, x2, y2 = box.data.tolist()[0]
             cat = cat.item()
+            score = float(score.item())
+            cate = cate_dict[cat]
             x1 = int(x1)
             x2 = int(x2)
             y1 = int(y1)
@@ -252,6 +255,7 @@ def detect(model, frame, alarm_range, camera_time, resize=800, max_size=1333, mi
                             [x1, y1, x2, y2, x2 - x1, y2 - y1]):
                 alarm = camera_time
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
+            cv2.putText(frame, cate+'_%.2f'%score, (x1, y1), 0, 0.6, (0, 255, 0), 2)
         cv2.polylines(frame, [alarm_range.reshape((-1, 1, 2))], True, (0, 255, 255), 2)
 
     return alarm, frame

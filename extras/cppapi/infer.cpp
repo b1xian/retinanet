@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
 	auto engine = retinanet::Engine(argv[1]);
 
 	cout << "Preparing data..." << endl;
-	auto start = chrono::steady_clock::now();
+//	auto start = chrono::steady_clock::now();
 	auto image = imread(argv[2], IMREAD_COLOR);
 	auto inputSize = engine.getInputSize();
 	cv::resize(image, image, Size(inputSize[1], inputSize[0]));
@@ -69,15 +69,16 @@ int main(int argc, char *argv[]) {
 	// Run inference n times
 	cout << "Running inference..." << endl;
 	const int count = 100;
-//	auto start = chrono::steady_clock::now();
+	auto start = chrono::steady_clock::now();
  	vector<void *> buffers = { data_d, scores_d, boxes_d, classes_d };
-//	for (int i = 0; i < count; i++) {
-//		engine.infer(buffers, 1);
-//	}
+	for (int i = 0; i < count; i++) {
+		engine.infer(buffers, 1);
+	}
 	engine.infer(buffers, 1);
 	auto stop = chrono::steady_clock::now();
 	auto timing = chrono::duration_cast<chrono::duration<double>>(stop - start);
-	cout << "Took " << timing.count() << " seconds do inference." << endl;
+	cout << "Took " << timing.count() / count << " seconds per inference." << endl;
+//	cout << "Took " << timing.count() << " seconds do inference." << endl;
 
 	// Get back the bounding boxes
 	auto scores = new float[num_det];

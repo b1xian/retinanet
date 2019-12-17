@@ -60,6 +60,7 @@ def infer(model, path, detections_file, resize, max_size, batch_size, mixed_prec
 
     results = []
     profiler = Profiler(['infer', 'fw'])
+    
     with torch.no_grad():
         for i, (data, ids, ratios) in enumerate(data_iterator):
             # Forward pass

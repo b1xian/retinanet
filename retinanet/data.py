@@ -27,6 +27,7 @@ class CocoDataset(data.dataset.Dataset):
         if 'categories' in self.coco.dataset:
             self.categories_inv = { k: i for i, k in enumerate(self.coco.getCatIds()) }
 
+
     def __len__(self):
         return len(self.ids)
 

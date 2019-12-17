@@ -86,6 +86,7 @@ def load_model(args, verbose=False):
     if args.command == 'train' and (not os.path.exists(args.model) or args.override):
         if verbose: print('Initializing model...')
         model = Model(args.backbone, args.classes)
+        # 是否fine-tune
         model.initialize(args.fine_tune)
         if verbose: print(model)
 

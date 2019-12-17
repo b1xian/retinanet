@@ -28,8 +28,6 @@ def detect_video(model, input_path, output_path, video_name, alarm_range):
         alarm, frame = model.predict(frame, alarm_range, frame_count)
         if alarm:
             print(alarm)
-        else:
-            print(False)
         out.write(frame)
     cost = time.time() - start
     print('mean fps:', frame_count / (cost + 1e-5))
